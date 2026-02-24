@@ -1,10 +1,15 @@
 import 'dotenv/config';
 import express from 'express';
+import { env } from './env';
+import { authRouter } from './routers/auth-router';
+import { errorHandler } from './middlewares/error-handler';
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = env.PORT || 3333;
 
 app.use(express.json());
+app.use('/auth', authRouter);
+app.use(errorHandler);
 
 app.get('/health', (_req, res) => {
   res.json({ status: 'ok' });
