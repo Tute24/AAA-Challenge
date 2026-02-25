@@ -22,4 +22,12 @@ export class PrismaAuthRepository implements AuthRepository {
 
     return user || null;
   }
+
+  async findUserById(id: string) {
+    const user = await prisma.user.findUnique({
+      where: { id },
+    });
+
+    return user || null;
+  }
 }
