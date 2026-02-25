@@ -5,10 +5,15 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import z from 'zod';
+import { signInRequest } from '../../api/sign-in-request';
+import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export type SignInFormData = z.infer<typeof signInSchema>;
 
 export function SignInForm() {
+  const [errorMessage, setErrorMessage] = useState<string>('');
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -16,16 +21,23 @@ export function SignInForm() {
   } = useForm<SignInFormData>({
     resolver: zodResolver(signInSchema),
   });
+
+  const onSubmit = async (data: SignInFormData) => {
+    const signInResult = await signInRequest(data);
+    if (!signInResult.success) {
+      setErrorMessage(signInResult.message);
+      return;
+    }
+    router.push('/dashboard');
+  };
+
   return (
     <div className="w-full max-w-sm bg-white rounded-xl shadow-cyan-700 p-8 flex flex-col gap-6 border-2 border-cyan-700">
       <h1 className="font-display font-semibold text-2xl text-black text-center">
         Faça Log In
       </h1>
 
-      <form
-        className="flex flex-col gap-4"
-        onSubmit={handleSubmit((data) => console.log(data))}
-      >
+      <form className="flex flex-col gap-4" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col gap-1">
           <label
             htmlFor="email"
@@ -72,6 +84,11 @@ export function SignInForm() {
         >
           {isSubmitting ? 'Entrando...' : 'Entrar'}
         </button>
+        {errorMessage && (
+          <span className="text-red-500 text-sm text-center">
+            {errorMessage}
+          </span>
+        )}
       </form>
 
       <p className="text-center text-sm font-display text-gray-700">
