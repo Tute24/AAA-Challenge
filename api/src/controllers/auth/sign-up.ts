@@ -1,3 +1,4 @@
+import { env } from '@/env';
 import { PrismaAuthRepository } from '@/repositories/prisma/prisma-auth-repository';
 import { signUpSchema } from '@/schemas/auth/sign-up-schema';
 import { SignUpService } from '@/services/auth/sign-up';
@@ -9,7 +10,19 @@ export async function signUpController(req: Request, res: Response) {
   const authRepository = new PrismaAuthRepository();
   const signUpService = new SignUpService(authRepository);
 
-  const { username } = await signUpService.execute({ email, name, password });
+  const { username, token } = await signUpService.execute({
+    email,
+    name,
+    password,
+  });
 
-  res.status(201).json({ username });
+  res
+    .cookie('token', token, {
+      httpOnly: true,
+      secure: env.NODE_ENV === 'production', //enquanto não estiver em produção, o cookie pode ser enviado em conexões não seguras (http)
+      sameSite: 'lax', //permite o cookie ser enviado em requisições de outros sites (para desenvolvimento é ok)
+      maxAge: 1 * 24 * 60 * 60 * 1000, // 1 dia de validade para o cookie
+    })
+    .status(201)
+    .json({ username });
 }
