@@ -1,5 +1,6 @@
 import 'dotenv/config';
 import cors from 'cors';
+import cookieParser from 'cookie-parser';
 import express from 'express';
 import { env } from './env';
 import { authRouter } from './routers/auth-router';
@@ -16,6 +17,7 @@ app.use(
   }),
 );
 app.use(express.json());
+app.use(cookieParser());
 app.use('/auth', authRouter);
 app.use('/daily-sales', dailySalesRouter);
 app.use(errorHandler);
