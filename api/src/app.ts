@@ -4,6 +4,7 @@ import express from 'express';
 import { env } from './env';
 import { authRouter } from './routers/auth-router';
 import { errorHandler } from './middlewares/error-handler';
+import { dailySalesRouter } from './routers/daily-sales-router';
 
 const app = express();
 const PORT = env.PORT || 3333;
@@ -16,6 +17,7 @@ app.use(
 );
 app.use(express.json());
 app.use('/auth', authRouter);
+app.use('/daily-sales', dailySalesRouter);
 app.use(errorHandler);
 
 app.get('/health', (_req, res) => {
