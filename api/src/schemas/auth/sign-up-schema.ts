@@ -5,12 +5,12 @@ export const signUpSchema = z
   .object({
     name: z
       .string()
-      .min(2, { message: 'Name must be at least 2 characters long.' }),
-    email: z.string().email({ message: 'Invalid email address.' }),
+      .min(2, { message: 'O nome deve ter pelo menos 2 caracteres.' }),
+    email: z.string().email({ message: 'Endereço de e-mail inválido.' }),
     password: passwordSchema,
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: 'Passwords do not match.',
+    message: 'As senhas não coincidem.',
     path: ['confirmPassword'],
   });

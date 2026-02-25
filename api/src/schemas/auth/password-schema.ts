@@ -4,14 +4,14 @@ export const passwordSchema = z
   .string()
   .min(8, {
     message:
-      'Password must be at least 8 characters long, include one uppercase letter, one number, and one special character.',
+      'A senha deve ter pelo menos 8 caracteres, incluindo uma letra maiúscula, um número e um caractere especial.',
   })
   .regex(/[A-Z]/, {
-    message: 'Password must include at least one uppercase letter.',
+    message: 'A senha deve conter pelo menos uma letra maiúscula.',
   })
   .regex(/[0-9]/, {
-    message: 'Password must include at least one number.',
+    message: 'A senha deve conter pelo menos um número.',
   })
   .regex(/[^A-Za-z0-9]/, {
-    message: 'Password must include at least one special character.',
+    message: 'A senha deve conter pelo menos um caractere especial.',
   });

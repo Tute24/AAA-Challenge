@@ -20,7 +20,7 @@ export async function signUpController(req: Request, res: Response) {
     .cookie('token', token, {
       httpOnly: true,
       secure: env.NODE_ENV === 'production', //enquanto não estiver em produção, o cookie pode ser enviado em conexões não seguras (http)
-      sameSite: 'lax', //permite o cookie ser enviado em requisições de outros sites (para desenvolvimento é ok)
+      sameSite: 'lax', //permite o cookie ser enviado em requisições de outros sites (para desenvolvimento é ok, em produção pode ser ajustado para melhorar segurança dependendo do objetivo da aplicação (com 'strict'))
       maxAge: 1 * 24 * 60 * 60 * 1000, // 1 dia de validade para o cookie
     })
     .status(201)
