@@ -79,6 +79,7 @@ export function SignInForm() {
         </div>
 
         <button
+          disabled={isSubmitting}
           type="submit"
           className="w-full mt-2 py-2 bg-cyan-700 hover:bg-cyan-800 text-white font-display font-semibold text-sm rounded-md cursor-pointer transition-colors duration-150"
         >
