@@ -1,6 +1,7 @@
 import { DailySalesHistoryResponseElement } from '@/types/daily-sales/daily-sales-history-response';
 import { CardsSection } from './cards-section';
 import { IndicatorTable } from './tables/indicator-table';
+import { ProfitChart } from './charts/profit-chart';
 
 interface DashboardViewProps {
   dailySalesDataHistory: DailySalesHistoryResponseElement[];
@@ -18,6 +19,10 @@ export function DashboardView({ dailySalesDataHistory }: DashboardViewProps) {
   const mappedDatesAndCosts = dailySalesDataHistory.map((dailyData) => ({
     referenceDate: dailyData.referenceDate,
     totalCosts: dailyData.totalCosts,
+  }));
+  const mappedDatesAndProfits = dailySalesDataHistory.map((dailyData) => ({
+    referenceDate: dailyData.referenceDate,
+    profit: dailyData.profit,
   }));
 
   return (
@@ -41,6 +46,8 @@ export function DashboardView({ dailySalesDataHistory }: DashboardViewProps) {
           indicatorKey="totalCosts"
         />
       </section>
+
+      <ProfitChart data={mappedDatesAndProfits} />
     </main>
   );
 }
