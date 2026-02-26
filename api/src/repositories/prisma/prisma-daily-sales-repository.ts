@@ -15,4 +15,23 @@ export class PrismaDailySalesRepository implements DailySalesRepository {
 
     return dailySales;
   }
+
+  async getLastDayData(yesterday: Date, today: Date) {
+    const lastDayData = await prisma.dailySale.findFirst({
+      where: {
+        referenceDate: {
+          gte: yesterday,
+          lt: today,
+        },
+      },
+      select: {
+        referenceDate: true,
+        totalOrders: true,
+        grossRevenue: true,
+        totalCosts: true,
+      },
+    });
+
+    return lastDayData;
+  }
 }
