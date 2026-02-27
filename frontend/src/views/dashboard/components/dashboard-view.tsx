@@ -27,6 +27,11 @@ export function DashboardView({ dailySalesDataHistory }: DashboardViewProps) {
 
   return (
     <main className="px-6 sm:px-10 py-8 flex flex-col gap-10">
+      <div>
+        <h1 className="font-display font-bold text-xl sm:text-3xl text-gray-800">
+          Dashboard Genérico de Vendas
+        </h1>
+      </div>
       <CardsSection dailySalesDataHistory={dailySalesDataHistory} />
 
       <section className="grid grid-cols-1 lg:grid-cols-3 gap-6">
