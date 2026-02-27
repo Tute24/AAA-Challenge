@@ -37,7 +37,7 @@ Além das justificativas acima, é importante frisar que escolhe as ferramentas 
 | Tailwind CSS v4 | Estilização mais prática, facilitando o desenvolvimento responsivo e eficiente |
 | Recharts | Biblioteca de gráficos que possui integração com React e é muito útil para dashboard. Para o uso do recharts, precisei ir mais afundo na documentação e contei com a ajuda do Claude Agent para montar o componente do gráfico, que achei essencial para uma boa visualização do histórico de lucros. |
 | React Hook Form | Gerenciamento de formulários com validação performática, e boa integração com Zod para validação de schemas |
-| Axios | Cliente HTTP com suporte a `withCredentials` para envio automático de cookies |
+| Axios | Cliente HTTP (`apiClient` na pasta `src/utils`) com suporte a `withCredentials` para envio automático de cookies |
 
 ### Automação
 | Tecnologia | Justificativa |
@@ -104,10 +104,12 @@ Mesmo em um projeto de escopo reduzido, a aplicação foi estruturada seguindo o
 
 O frontend utiliza o **App Router** do Next.js com separação clara entre Server Components e Client Components:
 
-- **Server Components** (`dashboard/page.tsx`) — buscam os dados da API no servidor, passando o cookie de autenticação via header. Nenhum dado sensível é exposto ao cliente, e o fetch das informações no servidor garante uma melhor UX, sem flicker ou flashing de conteúdo, já que a renderização ocorre com os dados completos
+- **Server Components** (`dashboard/page.tsx`) — buscam os dados da API no servidor, passando o cookie de autenticação via header. Nenhum dado sensível é exposto ao cliente, e o fetch das informações no servidor garante uma melhor UX, sem flicker ou flashing de conteúdo, já que a renderização ocorre com os dados completos. `IndicatorTable` é também outro server componente, responsável por renderizar a tabela de indicadores históricos, e é chamado com as props passadas pelo `dashboard/page.tsx`, que é o server component pai, através do `DashboardView`
 - **Client Components** — `CardsSection` (filtro de data com `useState`), `ProfitChart` (Recharts requer browser APIs), formulários de autenticação (React Hook Form)
 - **Next.js Middleware** (`proxy.ts`) — intercepta rotas `/dashboard/*` e redireciona para `/auth/sign-in` caso o cookie `token` esteja ausente, antes mesmo de renderizar qualquer componente. Essa 'parede' de proteção a cada request de navegação também evita content flashing e para um projeto pequeno não cria gargalos
 - **AuthProvider** — camada adicional client-side que chama `GET /auth/validate` para garantir que o token ainda é válido no banco (além da verificação de presença feita pelo middleware). Aqui é onde o estado global de autenticação é gerenciado, permitindo uma UX mais fluida, com redirecionamentos automáticos e proteção de rotas client-side, e onde também a segurança dá aplicação 'desconfia' do front e busca a rota de validação de token no back, pra garantir que ele é válido
+
+Busquei componentizar ao máximo o que era necessário, criando componentes reutilizáveis e organizados por funcionalidade na pasta `src/views`, como `CardsSection`, `ProfitChart` e `IndicatorTable`. O uso do Tailwind CSS facilitou a estilização rápida e responsiva, garantindo um layout limpo e moderno.
 
 ---
 
