@@ -202,8 +202,8 @@ npm run dev
 PORT=3333
 NODE_ENV=development
 
-DATABASE_URL=postgresql://<user>:<password>@db:5433/<db>
-DIRECT_URL=postgresql://<user>:<password>@db:5433/<db>
+DATABASE_URL=postgresql://<user>:<password>@db:5432/<db>
+DIRECT_URL=postgresql://<user>:<password>@db:5432/<db>
 
 POSTGRES_USER=
 POSTGRES_PASSWORD=
